@@ -64,6 +64,42 @@
             border-radius: 8px;
         }
 
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            user-select: none;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 50%;
+        }
+
+        .prev { left: 10px; transform: translateY(-50%); }
+        .next { right: 10px; transform: translateY(-50%); }
+
+        .dot-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .active {
+            background-color: #717171;
+        }
+
         footer {
             text-align: center;
             margin-top: 40px;
@@ -81,7 +117,6 @@
 
     <nav>
         <ul>
-            
             <li><a href="home.html">Home</a></li>
             <li><a href="index.html">Introduction</a></li>
             <li><a href="examples.html">Real World Examples</a></li>
@@ -95,6 +130,15 @@
         <img class="slides" src="images/GPT-image1.png" alt="Slide 1">
         <img class="slides" src="images/GPT-image2.png" alt="Slide 2">
         <img class="slides" src="images/GPT-image3.png" alt="Slide 3">
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+
+    <div class="dot-container">
+        <span class="dot" onclick="currentSlide(1)"></span> 
+        <span class="dot" onclick="currentSlide(2)"></span> 
+        <span class="dot" onclick="currentSlide(3)"></span> 
     </div>
 
     <h2>Chat GPT</h2>
@@ -105,20 +149,35 @@
     </footer>
 
     <script>
-        let slideIndex = 0;
-        const slides = document.getElementsByClassName("slides");
+        let slideIndex = 1;
+        showSlides(slideIndex);
 
-        function showSlides() {
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            const slides = document.getElementsByClassName("slides");
+            const dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
             for (let i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
             }
-            slideIndex++;
-            if (slideIndex > slides.length) slideIndex = 1;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
             slides[slideIndex - 1].style.display = "block";
-            setTimeout(showSlides, 3000); 
+            dots[slideIndex - 1].className += " active";
         }
 
-        showSlides();
+        // Optional: Auto-slide every 3 seconds
+        setInterval(() => { plusSlides(1); }, 3000);
     </script>
 </body>
 </html>
+
